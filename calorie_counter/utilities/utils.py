@@ -25,3 +25,13 @@ def get_calorie_consumption(user, year, month=None, week=None, day=None):
     calories_list = logs.values_list("calories",flat=True)
     total = sum(calories_list)
     return  total
+
+
+def get_total_calories_per_meal(std_calories, weight):
+    total = (std_calories / 100) * weight
+    return total
+
+
+def get_total_expense_per_activity(std_calories, duration):
+    total = (std_calories / 30) * duration
+    return total

@@ -13,7 +13,7 @@ class FoodItem(TimestampedModel):
                              on_delete=models.CASCADE)
     calories = models.IntegerField(default=0)
     macros = JSONField(default=dict)
-    is_global = models.BooleanField(default=True)
+    is_global = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
 
@@ -23,5 +23,5 @@ class Activity(TimestampedModel):
                              related_name="activities",
                              on_delete=models.CASCADE)
     calories_burnt = models.IntegerField(default=0)
-    is_global = models.BooleanField(default=True)
+    is_global = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

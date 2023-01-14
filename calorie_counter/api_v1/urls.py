@@ -3,21 +3,23 @@ from rest_framework import routers
 from .views import (FoodItemViewSet, 
                     ActivityViewSet,
                     MealLogViewSet,
-                    ActivityLogViewSet
-                    # CheckBookAvailabilityAPI
+                    ActivityLogViewSet,
+                    CreateUserView
                     )
 
 
 urlpatterns = []
 
 router = routers.SimpleRouter()
+router.register(r'users/signup',
+                CreateUserView, 'signup')
 router.register(r'food-items',
                 FoodItemViewSet, 'food_items')
 router.register(r'activities',
                 ActivityViewSet, 'activities')
-router.register(r'users/(?P<user_id>.+)/meal-logs',
+router.register(r'users/meal-logs',
                 ActivityLogViewSet, 'meal_logs')
-router.register(r'users/(?P<user_id>.+)/activity-logs',
+router.register(r'users/activity-logs',
                 MealLogViewSet, 'activity_logs')
 # urlpatterns += url("^books/next-available/$",
 #                    view=CheckBookAvailabilityAPI.as_view(),
