@@ -33,7 +33,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = "users.CustomUser"
 # Application definition
 
 DJANGO_APPS = [
