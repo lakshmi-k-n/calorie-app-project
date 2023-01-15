@@ -1,5 +1,5 @@
 # Calorie Counter
-SIMPLE CRUD API WITH DJANGO REST FRAMEWORK
+Simple CRUD application to manage and track calories with Django Rest Framework
 
 ## Requirements
 - Python 3.6
@@ -27,5 +27,8 @@ pip install -r requirements.txt
     `DATABASE_URL=postgres://cal_user:passpass@127.0.0.1:5432/calorie_counter`  
     `ALLOWED_HOSTS="0.0.0.0","localhost"`  
 
- Run migrations and start server
+ Run migrations and start server  
  `python manage.py runserver 0.0.0.0:8002`
+ 
+### APIs available  
+To view available APIs, use http://0.0.0.0:8002/swagger/
