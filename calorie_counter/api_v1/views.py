@@ -59,12 +59,12 @@ class ActivityViewSet(mixins.CreateModelMixin,
         else:
             activities = Activity.objects.filter(
             Q(is_global=True) | Q(created_by=user))
-            return set(activities)
+            id_set = set(activities.values_list("id",flat=True))
+            return Activity.objects.filter(id__in=id_set).order_by("-id")
 
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(created_by=user)
-
 
 
 class FoodItemViewSet(mixins.CreateModelMixin, 
@@ -96,7 +96,8 @@ class FoodItemViewSet(mixins.CreateModelMixin,
         else:
             food_items = FoodItem.objects.filter(
             Q(is_global=True) | Q(created_by=user))
-            return set(food_items)
+            id_set = set(food_items.values_list("id",flat=True))
+            return FoodItem.objects.filter(id__in=id_set).order_by("-id")
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -205,13 +206,13 @@ class MealLogViewSet(mixins.CreateModelMixin,
         week = self.request.query_params.get('week', None)
         month = self.request.query_params.get('month', None)
         year = self.request.query_params.get('year', None)
-
+        calorie_consumption = 0
         if frame == "daily":
             # need day,month,year
-            get_calorie_consumption(user, year, month=month, day=day)
+            calorie_consumption = get_calorie_consumption(user, year, month=month, day=day)
         elif frame == "weekly":
             # need week and year
-            get_calorie_consumption(user, year, week=week)
+            calorie_consumption = get_calorie_consumption(user, year, week=week)
         elif frame == "monthly":
             # need month and year
             calorie_consumption = get_calorie_consumption(user, year, month=month)
