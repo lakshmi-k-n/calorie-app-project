@@ -93,6 +93,7 @@ class MealLogSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True},
             'total_calories_consumed': {'read_only': True},
+            'weight': {'required': True},
         }
 
 
@@ -105,4 +106,5 @@ class ActivityLogSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True},
             'calories_burnt': {'read_only': True},
+            'duration': {'required': True},
         }

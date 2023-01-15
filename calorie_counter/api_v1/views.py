@@ -66,6 +66,7 @@ class ActivityViewSet(mixins.CreateModelMixin,
         serializer.save(created_by=user)
 
 
+
 class FoodItemViewSet(mixins.CreateModelMixin, 
                    mixins.UpdateModelMixin,
                    mixins.ListModelMixin,
@@ -107,7 +108,7 @@ class ActivityLogViewSet(mixins.CreateModelMixin,
                    mixins.ListModelMixin,
                    viewsets.GenericViewSet):
     '''
-    View to list books
+    View to list logs
     '''
     permission_classes = (IsAuthenticated,)
     authentication_classes = (BasicAuthentication,)
@@ -122,9 +123,22 @@ class ActivityLogViewSet(mixins.CreateModelMixin,
 
     def perform_create(self, serializer):
         user = self.request.user
-        serializer.save(created_by=user)
+        instance = serializer.save(user=user)
+        calories = instance.activity.calories_burnt
+        cals_per_activity = get_total_expense_per_activity(calories,
+                                                    instance.duration)
+        instance.calories_burnt = cals_per_activity
+        instance.save()
 
-    @action(detail=True, methods=['get'])
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        calories = instance.activity.calories_burnt
+        cals_per_activity = get_total_expense_per_activity(calories,
+                                                    instance.duration)
+        instance.calories_burnt = cals_per_activity
+        instance.save()
+
+    @action(detail=False, methods=['get'])
     def stats(self, request, **kwargs):
         user = self.request.user
         frame = self.request.query_params.get('frame', None)
@@ -145,7 +159,7 @@ class ActivityLogViewSet(mixins.CreateModelMixin,
             calorie_expenditure = get_calorie_expenditure(user, year, month=month)
         else:
             raise Http404
-        return Response(serializer.data)
+        return Response(calorie_expenditure)
 
 
 class MealLogViewSet(mixins.CreateModelMixin, 
@@ -167,9 +181,23 @@ class MealLogViewSet(mixins.CreateModelMixin,
 
     def perform_create(self, serializer):
         user = self.request.user
-        serializer.save(created_by=user)
+        instance = serializer.save(user=user)
+        calories = instance.food_item.calories
+        cals_per_meal = get_total_calories_per_meal(calories,
+                                                    instance.weight)
+        instance.total_calories_consumed = cals_per_meal
+        instance.save()
 
-    @action(detail=True, methods=['get'])
+    def perform_update(self, serializer):
+        user = self.request.user
+        instance = serializer.save()
+        calories = instance.food_item.calories
+        cals_per_meal = get_total_calories_per_meal(calories,
+                                                    instance.weight)
+        instance.total_calories_consumed = cals_per_meal
+        instance.save()
+
+    @action(detail=False, methods=['get'])
     def stats(self, request, **kwargs):
         user = self.request.user
         frame = self.request.query_params.get('frame', None)
@@ -186,8 +214,7 @@ class MealLogViewSet(mixins.CreateModelMixin,
             get_calorie_consumption(user, year, week=week)
         elif frame == "monthly":
             # need month and year
-            get_calorie_consumption(user, year, month=month)
-            pass
+            calorie_consumption = get_calorie_consumption(user, year, month=month)
         else:
             raise Http404
-        return Response(serializer.data)
+        return Response(calorie_consumption)

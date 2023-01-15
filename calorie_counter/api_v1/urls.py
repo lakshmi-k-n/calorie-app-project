@@ -18,9 +18,9 @@ router.register(r'food-items',
 router.register(r'activities',
                 ActivityViewSet, 'activities')
 router.register(r'users/meal-logs',
-                ActivityLogViewSet, 'meal_logs')
+                MealLogViewSet, 'meal_logs')
 router.register(r'users/activity-logs',
-                MealLogViewSet, 'activity_logs')
+                ActivityLogViewSet, 'activity_logs')
 # urlpatterns += url("^books/next-available/$",
 #                    view=CheckBookAvailabilityAPI.as_view(),
 #                     name="next-available"),
