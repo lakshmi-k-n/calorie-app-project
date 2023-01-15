@@ -38,7 +38,6 @@ class ActivityViewSet(mixins.CreateModelMixin,
     '''
     permission_classes = (IsAuthenticated,)
     authentication_classes = (BasicAuthentication,)
-    # serializer_class = FoodItemSerializer
     lookup_field = ('id')
 
     def get_serializer_class(self):
@@ -75,7 +74,6 @@ class FoodItemViewSet(mixins.CreateModelMixin,
     '''
     permission_classes = (IsAuthenticated,)
     authentication_classes = (BasicAuthentication,)
-    # serializer_class = FoodItemSerializer
     lookup_field = ('id')
 
     def get_serializer_class(self):
@@ -109,7 +107,7 @@ class ActivityLogViewSet(mixins.CreateModelMixin,
                    mixins.ListModelMixin,
                    viewsets.GenericViewSet):
     '''
-    View to list logs
+    View to list activity logs
     '''
     permission_classes = (IsAuthenticated,)
     authentication_classes = (BasicAuthentication,)
